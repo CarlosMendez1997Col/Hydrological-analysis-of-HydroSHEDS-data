@@ -1,1 +1,1 @@
-# Hydrological analysis using HydroATLAS and HydroSHEDS in ArcGIS API For Python.
+# Hydrological analysis using HydroATLAS, HydroSHEDS, HydroBASINS, HydroLAKES and HydroRIVERS data.
