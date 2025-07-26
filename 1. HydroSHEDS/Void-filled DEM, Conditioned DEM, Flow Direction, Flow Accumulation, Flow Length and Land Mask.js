@@ -1,21 +1,15 @@
 
 // Hydrological analysis using HydroATLAS, HydroSHEDS, HydroBASINS, HydroLAKES and HydroRIVERS data.
 
+// Created by Carlos Mendez
+
 // The original data, are available in:
 
 // HydroSHEDS
-// https://www.hydrosheds.org/products/hydrosheds
 
-// HydroLAKES
-// https://www.hydrosheds.org/products/hydrolakes
-
-// HydroRIVERS
-// https://www.hydrosheds.org/products/hydrorivers
-
-// Import the Basin level 07 of HYdroSEDS
-var hydrobasins_7 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_7");
-var basin_7 = hydrobasins_7.filter(ee.Filter.eq('HYBAS_ID', 6070130930))
-var geometry = basin_7.geometry()
+// Import the Colombia Boundary
+var dataset = ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level1')
+var Col_boun = dataset.filter(ee.Filter.eq('ADM0_NAME', 'Colombia'));
 
 ///// Flow Accumulation /////
 
@@ -67,20 +61,20 @@ var lakes_BRB_oc = gsw.select('occurrence');
 
 // Clip all data in Bogota River Basin (BRB)
 
-var BRB_flow_15 = flowAccumulation_15.clip(basin_7);
-var BRB_flow_30 = flowAccumulation_30.clip(basin_7);
+var Col_flow_15 = flowAccumulation_15.clip(Col_boun);
+var Col_flow_30 = flowAccumulation_30.clip(Col_boun);
 
-var BRB_hydro_DEM_03 = elevation_DEM_03.clip(basin_7);
-var BRB_hydro_DEM_15 = elevation_DEM_15.clip(basin_7);
-var BRB_hydro_DEM_30 = elevation_DEM_30.clip(basin_7);
+var Col_hydro_DEM_03 = elevation_DEM_03.clip(Col_boun);
+var Col_hydro_DEM_15 = elevation_DEM_15.clip(Col_boun);
+var Col_hydro_DEM_30 = elevation_DEM_30.clip(Col_boun);
 
-var BRB_void_fill_DEM_03 = void_fil_dem_03.clip(basin_7);
+var Col_void_fill_DEM_03 = void_fil_dem_03.clip(Col_boun);
 
-var BRB_dra_dir_03 = drainageDirection_03.clip(basin_7);
-var BRB_dra_dir_15 = drainageDirection_15.clip(basin_7);
-var BRB_dra_dir_30 = drainageDirection_30.clip(basin_7);
+var Col_dra_dir_03 = drainageDirection_03.clip(Col_boun);
+var Col_dra_dir_15 = drainageDirection_15.clip(Col_boun);
+var Col_dra_dir_30 = drainageDirection_30.clip(Col_boun);
 
-var BRB_lakes = lakes_BRB_oc.clip(basin_7);
+var Col_lakes = lakes_BRB_oc.clip(Col_boun);
 
 // Import Symbology
 
@@ -118,23 +112,20 @@ var visParams = {lineWidth: 2,
     max: 10}
 };
 
-
 Map.setOptions('SATELLITE')
+Map.centerObject(Col_boun, 5)
 
-Map.centerObject(basin_7)
-Map.addLayer(basin_7, {color: 'yellow'}, 'Bogota River Basin level 7');
+Map.addLayer(Col_flow_15, flowAccumulationVis, 'Flow Accumulation 15 Arc Seconds');
+Map.addLayer(Col_flow_30, flowAccumulationVis, 'Flow Accumulation 30 Arc Seconds');
 
-Map.addLayer(BRB_flow_15, flowAccumulationVis, 'Flow Accumulation 15 Arc Seconds');
-Map.addLayer(BRB_flow_30, flowAccumulationVis, 'Flow Accumulation 30 Arc Seconds');
+Map.addLayer(Col_hydro_DEM_03, elevationVis, 'Elevation DEM 03 Arc Seconds');
+Map.addLayer(Col_hydro_DEM_15, elevationVis, 'Elevation DEM 15 Arc Seconds');
+Map.addLayer(Col_hydro_DEM_30, elevationVis, 'Elevation DEM 30 Arc Seconds');
 
-Map.addLayer(BRB_hydro_DEM_03, elevationVis, 'Elevation DEM 03 Arc Seconds');
-Map.addLayer(BRB_hydro_DEM_15, elevationVis, 'Elevation DEM 15 Arc Seconds');
-Map.addLayer(BRB_hydro_DEM_30, elevationVis, 'Elevation DEM 30 Arc Seconds');
+Map.addLayer(Col_void_fill_DEM_03, elevationVis, 'Elevation Void Fill DEM 03 Arc Seconds');
 
-Map.addLayer(BRB_void_fill_DEM_03, elevationVis, 'Elevation Void Fill DEM 03 Arc Seconds');
+Map.addLayer(Col_dra_dir_03, drainageDirectionVis, 'Drainage Direction 03 Arc Seconds');
+Map.addLayer(Col_dra_dir_15, drainageDirectionVis, 'Drainage Direction 15 Arc Seconds');
+Map.addLayer(Col_dra_dir_30, drainageDirectionVis, 'Drainage Direction 30 Arc Seconds');
 
-Map.addLayer(BRB_dra_dir_03, drainageDirectionVis, 'Drainage Direction 03 Arc Seconds');
-Map.addLayer(BRB_dra_dir_15, drainageDirectionVis, 'Drainage Direction 15 Arc Seconds');
-Map.addLayer(BRB_dra_dir_30, drainageDirectionVis, 'Drainage Direction 30 Arc Seconds');
-
-Map.addLayer(BRB_lakes, visParams, 'Surface Water and Lakes ');
+Map.addLayer(Col_lakes, visParams, 'Surface Water and Lakes ');
