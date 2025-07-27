@@ -1,9 +1,6 @@
-
 // Hydrological analysis using HydroATLAS, HydroSHEDS, HydroBASINS, HydroLAKES and HydroRIVERS data.
 
 // Created by Carlos Mendez
-
-// The original data, are available in:
 
 // HydroSHEDS
 
@@ -112,20 +109,55 @@ var visParams = {lineWidth: 2,
     max: 10}
 };
 
-Map.setOptions('SATELLITE')
-Map.centerObject(Col_boun, 5)
+var map1 = ui.Map();
+map1.add(ui.Label('Flow Accumulation',{position: 'bottom-center'}));
+map1.addLayer(Col_flow_15, flowAccumulationVis, 'Flow Accumulation 15 Arc Seconds');
+map1.addLayer(Col_flow_30, flowAccumulationVis, 'Flow Accumulation 30 Arc Seconds');
+map1.centerObject(Col_boun, 5)
+map1.setOptions('SATELLITE')
 
-Map.addLayer(Col_flow_15, flowAccumulationVis, 'Flow Accumulation 15 Arc Seconds');
-Map.addLayer(Col_flow_30, flowAccumulationVis, 'Flow Accumulation 30 Arc Seconds');
+var map2 = ui.Map();
+map2.add(ui.Label('Elevation DEM',{position: 'bottom-center'}));
+map2.addLayer(Col_hydro_DEM_03, elevationVis, 'Elevation DEM 03 Arc Seconds');
+map2.addLayer(Col_hydro_DEM_15, elevationVis, 'Elevation DEM 15 Arc Seconds');
+map2.addLayer(Col_hydro_DEM_30, elevationVis, 'Elevation DEM 30 Arc Seconds');
+map2.addLayer(Col_void_fill_DEM_03, elevationVis, 'Elevation Void Fill DEM 03 Arc Seconds');
+map2.centerObject(Col_boun, 5)
+map2.setOptions('SATELLITE')
 
-Map.addLayer(Col_hydro_DEM_03, elevationVis, 'Elevation DEM 03 Arc Seconds');
-Map.addLayer(Col_hydro_DEM_15, elevationVis, 'Elevation DEM 15 Arc Seconds');
-Map.addLayer(Col_hydro_DEM_30, elevationVis, 'Elevation DEM 30 Arc Seconds');
+var map3 = ui.Map();
+map3.add(ui.Label('Drainage Direction',{position: 'bottom-center'}));
+map3.addLayer(Col_dra_dir_03, drainageDirectionVis, 'Drainage Direction 03 Arc Seconds');
+map3.addLayer(Col_dra_dir_15, drainageDirectionVis, 'Drainage Direction 15 Arc Seconds');
+map3.addLayer(Col_dra_dir_30, drainageDirectionVis, 'Drainage Direction 30 Arc Seconds');
+map3.centerObject(Col_boun, 5)
+map3.setOptions('SATELLITE')
 
-Map.addLayer(Col_void_fill_DEM_03, elevationVis, 'Elevation Void Fill DEM 03 Arc Seconds');
+var map4 = ui.Map();
+map4.add(ui.Label('Surface Water and Lakes',{position: 'bottom-center'}));
+map4.addLayer(Col_lakes, visParams, 'Surface Water and Lakes');
+map4.centerObject(Col_boun, 5)
+map4.setOptions('SATELLITE')
 
-Map.addLayer(Col_dra_dir_03, drainageDirectionVis, 'Drainage Direction 03 Arc Seconds');
-Map.addLayer(Col_dra_dir_15, drainageDirectionVis, 'Drainage Direction 15 Arc Seconds');
-Map.addLayer(Col_dra_dir_30, drainageDirectionVis, 'Drainage Direction 30 Arc Seconds');
+var mapPanel = ui.Panel(
 
-Map.addLayer(Col_lakes, visParams, 'Surface Water and Lakes ');
+    [
+      ui.Panel([map1], null, {stretch: 'both'}),
+      ui.Panel([map2], null, {stretch: 'both'}),
+      ui.Panel([map3], null, {stretch: 'both'}),
+      ui.Panel([map4], null, {stretch: 'both'})
+    ],
+
+    ui.Panel.Layout.Flow('horizontal'), {stretch: 'both'});
+    
+var title = ui.Label('HydroSHEDS Colombia', {
+  stretch: 'horizontal',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  fontSize: '20px'
+});
+
+// Add images and title to the ui.root.
+ui.root.widgets().reset([title, mapPanel]);
+ui.root.setLayout(ui.Panel.Layout.Flow('vertical'));
+
