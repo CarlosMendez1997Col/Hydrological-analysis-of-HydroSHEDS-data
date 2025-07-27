@@ -1,42 +1,138 @@
 // Hydrological analysis using HydroATLAS, HydroSHEDS, HydroBASINS, HydroLAKES and HydroRIVERS data.
 
-// The original data, are available in:
+// Created by Carlos Mendez
 
-// HydroBASINS
-// https://www.hydrosheds.org/products/hydrobasins
+// HydroSHEDS
 
-// Import the Basin level 07 of HYdroSEDS
-var hydrobasins_7 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_7");
-var basin_7 = hydrobasins_7.filter(ee.Filter.eq('HYBAS_ID', 6070130930))
-var geometry = basin_7.geometry()
+// Import the Colombia Boundary
+var Col_boun = ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level1')
+                  .filter('ADM0_NAME == "Colombia"');
 
-// Import the Basin level 08 of HYdroSEDS
-var hydrobasins_8 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_8");
-var basin_8 = hydrobasins_8.filter(ee.Filter.inList('HYBAS_ID', [6080130930,6080126950,6080126840,6080124940,6080125020,
-                                                                 6080124900,6080124890,6080119160,6080119260,6089084130]))
+var AOI = Col_boun
 
-// Import the Basin level 09 of HYdroSEDS
-var hydrobasins_9 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_9");
-var basin_9 = hydrobasins_9.filter(ee.Filter.inList('HYBAS_ID', [6090130930, 6090126950, 6090126840, 6090127130, 6090127210, 6090126490,
-                                                                 6090126340, 6090124940, 6090125020, 6090124900, 6090124890, 6090123300,
-                                                                 6090123460, 6090122470, 6090122380, 6090120740, 6090120730, 6090119870,
-                                                                 6090119930, 6090119160, 6090119260, 6090118271, 6090118272, 6099084131,
-                                                                 6090118120, 6090117540, 6090117630]))
-                                                                 
-// Import the Basin level 10 of HYdroSEDS
-var hydrobasins_10 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_10");
-var basin_10 = hydrobasins_10.filter(ee.Filter.inList('HYBAS_ID', [6100130930, 6101009660, 6101009320, 6101009140, 6100126950, 6100126840, 6100127130,
-                                                                   6100127210, 6100128010, 6100127870, 6100124590, 6100124490, 6101008010, 6100126490,
-                                                                   6100126340, 6100124940, 6100125020, 6100124900, 6100124890, 6100125030, 6100124950,
-                                                                   6100123690, 6100123760, 6100123300, 6100123460, 6100122470, 6100122380, 6100120740,
-                                                                   6100120730, 6100119870, 6100119930, 6100119160, 6100119260, 6100118170, 6100118180,
-                                                                   6101007030, 6100118271, 6100118272, 6109084131, 6100118120, 6100117540, 6100117630,
-                                                                   6100120670, 6100120661, 6100120662, 6101003980]))
+/*
+// Import the Basin level 01 of HYdroBASINS
+var hydrobasins_1 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_1")
+                      .filterBounds(Col_boun.geometry());
+*/
 
-Map.setOptions('SATELLITE')
+var empty = ee.Image().byte();
 
-Map.centerObject(basin_7)
-Map.addLayer(basin_7, {color: 'yellow'}, 'Bogota River Basin level 7');
-Map.addLayer(basin_8, {color: 'blue'}, 'Bogota River Basin level 8');
-Map.addLayer(basin_9, {color: 'gray'}, 'Bogota River Basin level 9');
-Map.addLayer(basin_10, {color: 'orange'}, 'Bogota River Basin level 10');
+// Import the Basin level 02 of HYdroBASINS
+var hydrobasins_2 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_2")
+                      .filterBounds(Col_boun.geometry());
+
+var palette_2 = empty.paint({featureCollection: hydrobasins_2 , color: 'HYBAS_ID'});
+
+// Import the Basin level 03 of HYdroBASINS
+var hydrobasins_3 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_3")
+                      .filterBounds(Col_boun.geometry());
+
+var palette_3 = empty.paint({featureCollection: hydrobasins_3 , color: 'HYBAS_ID'});
+
+// Import the Basin level 04 of HYdroBASINS
+var hydrobasins_4 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_4")
+                      .filterBounds(Col_boun.geometry());
+
+var palette_4 = empty.paint({featureCollection: hydrobasins_4 , color: 'HYBAS_ID'});
+
+// Import the Basin level 05 of HYdroBASINS
+var hydrobasins_5 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_5")
+                      .filterBounds(Col_boun.geometry());
+
+var palette_5 = empty.paint({featureCollection: hydrobasins_5 , color: 'HYBAS_ID'});
+
+// Import the Basin level 06 of HYdroBASINS
+var hydrobasins_6 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_6")
+                      .filterBounds(Col_boun.geometry());
+
+var palette_6 = empty.paint({featureCollection: hydrobasins_6 , color: 'HYBAS_ID'});
+
+// Import the Basin level 07 of HYdroBASINS
+var hydrobasins_7 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_7")
+                      .filterBounds(Col_boun.geometry());
+
+var palette_7 = empty.paint({featureCollection: hydrobasins_7 , color: 'HYBAS_ID'});
+
+// Import the Basin level 08 of HYdroBASINS
+var hydrobasins_8 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_8")
+                      .filterBounds(Col_boun.geometry());
+
+var palette_8 = empty.paint({featureCollection: hydrobasins_8 , color: 'HYBAS_ID'});
+
+// Import the Basin level 09 of HYdroBASINS
+var hydrobasins_9 = ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_9")
+                      .filterBounds(Col_boun.geometry());
+
+var palette_9 = empty.paint({featureCollection: hydrobasins_9 , color: 'HYBAS_ID'});
+
+var map2 = ui.Map();
+map2.add(ui.Label('HYydroBasins level 02',{position: 'bottom-center'}));
+map2.addLayer(palette_2.randomVisualizer(),{},'Colombia Basins Level 2', true, 0.5);
+map2.centerObject(AOI,5)
+map2.setOptions('SATELLITE')
+
+var map3 = ui.Map();
+map3.add(ui.Label('HYydroBasins level 03',{position: 'bottom-center'}));
+map3.addLayer(palette_3.randomVisualizer(),{},'Colombia Basins Level 3', true, 0.5);
+map3.centerObject(AOI,5)
+map3.setOptions('SATELLITE')
+
+var map4 = ui.Map();
+map4.add(ui.Label('HYydroBasins level 04',{position: 'bottom-center'}));
+map4.addLayer(palette_4.randomVisualizer(),{},'Colombia Basins Level 4', true, 0.5);
+map4.centerObject(AOI,5)
+map4.setOptions('SATELLITE')
+
+var map5 = ui.Map();
+map5.add(ui.Label('HYydroBasins level 05',{position: 'bottom-center'}));
+map5.addLayer(palette_5.randomVisualizer(),{},'Colombia Basins Level 5', true, 0.5);
+map5.centerObject(AOI,5)
+map5.setOptions('SATELLITE')
+
+var map6 = ui.Map();
+map6.add(ui.Label('HYydroBasins level 06',{position: 'bottom-center'}));
+map6.addLayer(palette_6.randomVisualizer(),{},'Colombia Basins Level 6', true, 0.5);
+map6.centerObject(AOI,5)
+map6.setOptions('SATELLITE')
+
+var map7 = ui.Map();
+map7.add(ui.Label('HYydroBasins level 07',{position: 'bottom-center'}));
+map7.addLayer(palette_7.randomVisualizer(),{},'Colombia Basins Level 7', true, 0.5);
+map7.centerObject(AOI,5)
+map7.setOptions('SATELLITE')
+
+var map8 = ui.Map();
+map8.add(ui.Label('HYydroBasins level 08',{position: 'bottom-center'}));
+map8.addLayer(palette_8.randomVisualizer(),{},'Colombia Basins Level 8', true, 0.5);
+map8.centerObject(AOI,5)
+map8.setOptions('SATELLITE')
+
+var map9 = ui.Map();
+map9.add(ui.Label('HYydroBasins level 09',{position: 'bottom-center'}));
+map9.addLayer(palette_9.randomVisualizer(),{},'Colombia Basins Level 9', true, 0.5);
+map9.centerObject(AOI,5)
+map9.setOptions('SATELLITE')
+
+var mapPanel = ui.Panel(
+
+    [
+      ui.Panel([map2, map3], null, {stretch: 'both'}),
+      ui.Panel([map4, map5], null, {stretch: 'both'}),
+      ui.Panel([map6, map7], null, {stretch: 'both'}),
+      ui.Panel([map8, map9], null, {stretch: 'both'})
+    ],
+
+    ui.Panel.Layout.Flow('horizontal'), {stretch: 'both'});
+    
+var title = ui.Label('HydroBASINS Colombia', {
+  stretch: 'horizontal',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  fontSize: '20px'
+});
+
+// Add images and title to the ui.root.
+ui.root.widgets().reset([title, mapPanel]);
+ui.root.setLayout(ui.Panel.Layout.Flow('vertical'));
+
