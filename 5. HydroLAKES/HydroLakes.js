@@ -149,6 +149,8 @@ var Col_boun = ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level1')
 var lakes = ee.FeatureCollection("projects/sat-io/open-datasets/HydroLakes/lake_poly_v10")
             .filterBounds(Col_boun.geometry());
 
+
+// Elevation of lake surface, in meters above sea level
 var elevation = lakes.select('Elevation');
 var elevation_img = ee.Image().byte().paint({featureCollection: elevation , color: 'Elevation'}).clip(Col_boun);
 
@@ -159,7 +161,7 @@ var max_elev = elevation.aggregate_max('Elevation');
 print(min_elev, max_elev)
 
 */
-
+// Lake surface area (i.e. polygon area), in square kilometers
 var Lake_area = lakes.select('Lake_area')
 var Lake_area_img = ee.Image().byte().paint({featureCollection: Lake_area , color: 'Lake_area'}).clip(Col_boun);
 
@@ -170,7 +172,7 @@ var max_lake_area = Lake_area.aggregate_max('Lake_area');
 
 print(min_lake_area, max_lake_area)
 */
-
+// Total lake or reservoir volume, in million cubic meters (1 mcm = 0.001 km3).
 var Vol_total = lakes.select('Vol_total')
 var Vol_total_img = ee.Image().byte().paint({featureCollection: Lake_area , color: 'Vol_total'}).clip(Col_boun);
 
@@ -181,6 +183,7 @@ var max_vol_total = Vol_total.aggregate_max('Vol_total');
 print(min_vol_total, max_vol_total)
 */
 
+// Area of the watershed associated with the lake, in square kilometers
 var Wshd_area = lakes.select('Wshd_area')
 var Wshd_area_img = ee.Image().byte().paint({featureCollection: Lake_area , color: 'Wshd_area'}).clip(Col_boun);
 
