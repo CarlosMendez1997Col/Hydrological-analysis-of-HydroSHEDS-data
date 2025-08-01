@@ -170,46 +170,27 @@ function createPanel2() {
 }  
   
 var map1 = ui.Map();
-
 map1.add(createPanel1())
-
 map1.setOptions('HYBRID')
-
 map1.centerObject(colombia)
-
 map1.addLayer(colombia, {}, 'Colombia Boundary',true, 0.5);
-
 map1.addLayer(BRB_flow_15, flowAccumulationVis, 'Flow Accumulation 15 Arc Seconds',true, 0.9);
-
 map1.addLayer(BRB_hydro_DEM_03, elevationVis, 'Elevation DEM 03 Arc Seconds', true, 0.9);
-
 map1.addLayer(BRB_void_fill_DEM_03, elevationVis, 'Elevation Void Fill DEM 03 Arc Seconds', true, 0.8);
-
 map1.addLayer(BRB_dra_dir_03, drainageDirectionVis, 'Drainage Direction 03 Arc Seconds', true, 0.5);
-
 map1.addLayer(BRB_lakes, visParams, 'Surface Water and Lakes ', true, 1.0);
 
 
 var map2 = ui.Map();
-
 map2.setOptions('HYBRID')
-
 map2.add(createPanel2())
-
 map2.centerObject(colombia, 4)
-
 map2.addLayer(colombia, {}, 'Colombia Boundary',true, 0.5);
-
 map2.addLayer(delta_area_ha_x10, {min: 0, max: 214, palette: pal_area_ha_x10}, 'Combined GLWD area in hectares x10');
-
 map2.addLayer(delta_area_pct, {min: 0, max: 100, palette: pal_area_pct}, 'Combined GLWD area in percent');
-
 map2.addLayer(delta_main_class, {min: 0, max: 33, palette: pal_main_class}, 'Combined GLWD main class');
-
 map2.addLayer(delta_main_class_50pct, {min: 0, max: 33, palette: pal_main_class_50pct}, 'Combined GLWD main class extent exceeds (50%)');
-
 ui.root.clear()
 
 ui.root.add(map1)
-
 ui.root.add(map2)
