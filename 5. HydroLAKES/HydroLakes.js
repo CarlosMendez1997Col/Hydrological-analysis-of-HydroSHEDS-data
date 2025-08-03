@@ -7,7 +7,8 @@
 // Set and configure Basemaps
 
 
-var iconChange = [
+var iconChange = 
+[
   {
     // Change map saturation.
         stylers: [{ gamma: 0.1,
@@ -16,44 +17,20 @@ var iconChange = [
                     //saturation: 0,
                  }]
   },
-  {
     // Change label properties.
-    elementType: 'labels',
-    stylers: [{visibility: 'on', color: '#000055'}]
-  },
-  {
-    // Change road properties.
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{visibility: 'on', color: '#000055'}]
-  },
-  {
-    // Change road labels.
-    featureType: 'road',
-    elementType: 'labels',
-    stylers: [{visibility: 'on', color: '#000055'}]
-  },
-  {
-    // Change icon properties.
-    elementType: 'labels.icon',
-    stylers: [{visibility: 'off', color: '#000055'}]
-  },
-  {
-    // Change POI options.
-    featureType: 'poi',
-    elementType: 'all',
-    stylers: [{visibility: 'off', color: '#000055'}]
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'geometry.fill',
-    stylers: [{visibility: 'off', color: '#000055'}]
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'geometry.stroke',
-    stylers: [{visibility: 'off', color: '#000055'}]
-  }
+  {elementType: 'labels', stylers: [{visibility: 'on', color: '#000055'}]},
+  // Change road properties.
+  {featureType: 'road', elementType: 'geometry', stylers: [{visibility: 'on', color: '#000055'}]},
+  // Change road labels.
+  {featureType: 'road', elementType: 'labels', stylers: [{visibility: 'on', color: '#000055'}]},
+  // Change icon properties.
+  {elementType: 'labels.icon', stylers: [{visibility: 'off', color: '#000055'}]},
+  // Change POI options.
+  {featureType: 'poi', elementType: 'all', stylers: [{visibility: 'off', color: '#000055'}]},
+  
+  {featureType: 'administrative', elementType: 'geometry.fill', stylers: [{visibility: 'off', color: '#000055'}]},
+  
+  {featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{visibility: 'off', color: '#000055'}]}
 ];
 
 
@@ -65,72 +42,30 @@ var baseChange = [
                     //saturation: 0
                  }]
   },
-  {
-    // Change label properties.
-    elementType: 'labels',
-    stylers: [{visibility: 'on', color: '#000055'}]
-  },
-  {
-    // Change road properties.
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{visibility: 'on', color: '#000055'}]
-  },
-  {
-    // Change road labels.
-    featureType: 'road',
-    elementType: 'labels',
-    stylers: [{visibility: 'off', color: '#000055'}]
-  },
-  {
-    // Change icon properties.
-    elementType: 'labels.icon',
-    stylers: [{visibility: 'off', color: '#000055'}]
-  },
-  {
-    // Change POI options.
-    featureType: 'poi',
-    elementType: 'all',
-    stylers: [{visibility: 'off', color: '#000055'}]
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'geometry.fill',
-    stylers: [{visibility: 'on', color: '#000055'}]
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'geometry.stroke',
-    stylers: [{visibility: 'on', color: '#000055'}]
-  },
+  // Change label properties.
+  {elementType: 'labels', stylers: [{visibility: 'on', color: '#000055'}]},
+  // Change road properties.
+  {featureType: 'road', elementType: 'geometry', stylers: [{visibility: 'on', color: '#000055'}]},
+  // Change road labels.
+  {featureType: 'road', elementType: 'labels', stylers: [{visibility: 'off', color: '#000055'}]},
+  // Change icon properties.
+  {elementType: 'labels.icon', stylers: [{visibility: 'off', color: '#000055'}]},
+  // Change POI options.
+  {featureType: 'poi', elementType: 'all', stylers: [{visibility: 'off', color: '#000055'}]},
   
+  {featureType: 'administrative', elementType: 'geometry.fill', stylers: [{visibility: 'on', color: '#000055'}]},
   
+  {featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{visibility: 'on', color: '#000055'}]},
   
-  {
-    featureType: 'landscape.natural.landcover',
-    elementType: 'geometry.fill',
-    stylers: [{visibility: 'on', color: '#00008B'}]
-  },
-  {
-    featureType: 'landscape.natural',
-    elementType: 'geometry',
-    stylers: [{visibility: 'on', color: '#00008B'}]
-  },
-  {
-    featureType: 'landscape.natural',
-    elementType: 'geometry.fill',
-    stylers: [{visibility: 'on', color: '#00008B'}]
-  },
-  {
-    featureType: 'landscape.natural.terrain',
-    elementType: 'geometry.fill',
-    stylers: [{visibility: 'on', color: '#00008B'}]
-  },
-   {
-    featureType: 'water',
-    elementType: 'labels.text.fill',
-    stylers: [{visibility: 'on', color: '#00008B'}]
-  }
+  {featureType: 'landscape.natural.landcover', elementType: 'geometry.fill', stylers: [{visibility: 'on', color: '#00008B'}]},
+  
+  {featureType: 'landscape.natural', elementType: 'geometry', stylers: [{visibility: 'on', color: '#00008B'}]},
+  
+  {featureType: 'landscape.natural', elementType: 'geometry.fill', stylers: [{visibility: 'on', color: '#00008B'}]},
+  
+  {featureType: 'landscape.natural.terrain', elementType: 'geometry.fill', stylers: [{visibility: 'on', color: '#00008B'}]},
+  
+  {featureType: 'water', elementType: 'labels.text.fill', stylers: [{visibility: 'on', color: '#00008B'}]}
   
 ];
 
@@ -149,8 +84,6 @@ var Col_boun = ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level1')
 var lakes = ee.FeatureCollection("projects/sat-io/open-datasets/HydroLakes/lake_poly_v10")
             .filterBounds(Col_boun.geometry());
 
-
-// Elevation of lake surface, in meters above sea level
 var elevation = lakes.select('Elevation');
 var elevation_img = ee.Image().byte().paint({featureCollection: elevation , color: 'Elevation'}).clip(Col_boun);
 
@@ -161,7 +94,7 @@ var max_elev = elevation.aggregate_max('Elevation');
 print(min_elev, max_elev)
 
 */
-// Lake surface area (i.e. polygon area), in square kilometers
+
 var Lake_area = lakes.select('Lake_area')
 var Lake_area_img = ee.Image().byte().paint({featureCollection: Lake_area , color: 'Lake_area'}).clip(Col_boun);
 
@@ -172,7 +105,7 @@ var max_lake_area = Lake_area.aggregate_max('Lake_area');
 
 print(min_lake_area, max_lake_area)
 */
-// Total lake or reservoir volume, in million cubic meters (1 mcm = 0.001 km3).
+
 var Vol_total = lakes.select('Vol_total')
 var Vol_total_img = ee.Image().byte().paint({featureCollection: Lake_area , color: 'Vol_total'}).clip(Col_boun);
 
@@ -183,7 +116,6 @@ var max_vol_total = Vol_total.aggregate_max('Vol_total');
 print(min_vol_total, max_vol_total)
 */
 
-// Area of the watershed associated with the lake, in square kilometers
 var Wshd_area = lakes.select('Wshd_area')
 var Wshd_area_img = ee.Image().byte().paint({featureCollection: Lake_area , color: 'Wshd_area'}).clip(Col_boun);
 
@@ -196,15 +128,15 @@ print(min_wshd_area, max_wshd_area)
 
 var map1 = ui.Map();
 map1.add(ui.Label('LAKES elevation and area',{position: 'bottom-center'}));
-map1.addLayer(elevation_img, {min: 0, max: 4482, palette: palettes.colorbrewer.Blues[9]}, 'Lakes elevation');
-map1.addLayer(Lake_area_img, {min: 0.1, max : 286.55, palette: palettes.colorbrewer.PuBu[9]}, 'Lake area');
+map1.addLayer(elevation_img, {min: 0, max: 4482, palette: ['skyblue','green','yellow']}, 'Lakes elevation');
+map1.addLayer(Lake_area_img, {min: 0.1, max : 286.55, palette: ['skyblue','green','yellow']}, 'Lake area');
 map1.centerObject(Col_boun,5)
 map1.setOptions('baseChange', {'baseChange': baseChange,'iconChange': iconChange});
 
 var map2 = ui.Map();
 map2.add(ui.Label('LAKES volume and area',{position: 'bottom-center'}));
-map2.addLayer(Vol_total_img, {min: 0.06, max: 1970, palette: palettes.colorbrewer.YlGn[9]}, 'Vol total');
-map2.addLayer(Wshd_area_img, {min: 0.2, max : 259819.7, palette: palettes.cmocean.Speed[7]}, 'Wshd area');
+map2.addLayer(Vol_total_img, {min: 0.06, max: 1970, palette: ['skyblue','green','yellow']}, 'Vol total');
+map2.addLayer(Wshd_area_img, {min: 0.2, max : 259819.7, palette: ['skyblue','green','yellow']}, 'Wshd area');
 map2.centerObject(Col_boun,5)
 map2.setOptions('iconChange', {'baseChange': baseChange,'iconChange': iconChange});
 
