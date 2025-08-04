@@ -4,10 +4,9 @@
 
 // HydroRIVERS
 
-// Set and configure Basemaps
+////////////////////////////////////////////////////////////////////////////// Set and configure Basemas  ///////////////////////////////////////////////////////////////////////////////////////
 
 var snazzy = require("users/aazuspan/snazzy:styles");
-
 
 var MultiBrand = "https://snazzymaps.com/style/20053/multi-brand-network"
 var AImap = "https://snazzymaps.com/style/283414/ai-map"
@@ -16,10 +15,27 @@ var MutedBlue = "https://snazzymaps.com/style/83/muted-blue"
 var Outrun = "https://snazzymaps.com/style/122898/outrun"
 var Cobalt = "https://snazzymaps.com/style/30/cobalt"
 
+////////////////////////////////////////////////////////////////////////////// Palette and Symbology  ///////////////////////////////////////////////////////////////////////////////////////
 
-// Import externat palette and symbology                 
+// Import externat palette and symbology from Gena repository 
+// https://github.com/gee-community/ee-palettes
 var palettes = require('users/gena/packages:palettes');
- 
+
+// Create manual palette 
+var Water1 = {palette: ['#d4a334','#1bff00','#fff700','#1b00ff','#10fff4','#50c7ff']};
+var Water2 = {palette: ['023858', '006837', '1a9850', '66bd63', 'a6d96a', 'd9ef8b', 'ffffbf', 'fee08b', 'fdae61', 'f46d43', 'd73027']};
+var Water3 = {palette: ['Red','SandyBrown','Yellow','LimeGreen', 'Blue','DarkBlue']};
+var Water4 = {palette: ['#1a1a4b', '#203387', '#254bb3', '#2b63e0', '#4673e6', '#6083ec', '#7a94f2', '#95a4f7', '#afb4fd', '#c8c5ff', 
+                            '#dcb3f5', '#df96e2', '#e47ac0', '#e95da0', '#ec407f', '#ee265f', '#f00a3f', '#f20027', '#f30015', '#f30000']};
+
+var Water5 = {palette: ['#0000FF', '#001AEB', '#0035D7', '#004FC3', '#006AAF','#00849B', '#009F87', '#00B973', '#00D45F', '#00EF4B',
+                              '#00FF37', '#29FF2E', '#52FF25', '#7BFF1C', '#A4FF13','#CDFF0A', '#F6FF00', '#FFD300', '#FFA600', '#FF7900']};
+
+var Water6 = {palette: ['001219','005f73','0a9396','94d2bd','e9d8a6','ee9b00','ca6702','bb3e03','ae2012','9b2226']};
+var Water7 = {palette: ['f94144','f3722c','f8961e','f9844a','f9c74f','90be6d','43aa8b','4d908e','577590','277da1']};
+var Water8 = {palette: ['000096','0064ff', '00b4ff', '33db80', '9beb4a','ffeb00', 'ffb300', 'ff6400', 'eb1e00', 'af0000']};
+
+////////////////////////////////////////////////////////////////////////////// Main Script  ///////////////////////////////////////////////////////////////////////////////////////
 
 // Import the Colombia Boundary
 var Col_boun = ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level1')
@@ -146,6 +162,37 @@ var INC_img = ee.Image().byte().paint({featureCollection: HydroRIVERS , color: '
 var NDOID = HydroRIVERS.select('NDOID');
 var NDOID_img = ee.Image().byte().paint({featureCollection: HydroRIVERS , color: 'NDOID', width:0.5}).clip(Col_boun);
 
+
+////////////////////////////////////////////////////////////////////////////// Set Style Images and Hillshade  ///////////////////////////////////////////////////////////////////////////////////////
+
+var hand30_100 = ee.ImageCollection("users/gena/global-hand/hand-100")
+var demALOS = ee.Image("JAXA/ALOS/AW3D30/V2_2")
+
+demALOS = demALOS.select('AVE_DSM').clip(Col_boun)
+
+var paletteHand = ['grey', 'white'];
+
+var vis = {min: -50.0, max: 3000.0, palette: paletteHand}
+
+// add styled
+var utils = require('users/gena/packages:utils')
+
+function hillshade(image) {
+  var weight = 0.7
+  var extrusion = 5
+  var sunAzimuth = 315
+  var sunElevation = 35
+  var elevation = 45
+  var contrast = 0.1
+  var brightness = 0
+  var saturation = 0.85
+  var gamma = 0.1
+
+  return utils.hillshadeRGB(image, demALOS, weight, extrusion, sunAzimuth, sunElevation, contrast, brightness, saturation, gamma)
+}
+  
+////////////////////////////////////////////////////////////////////////////// Set and Create Panels to View Images  ///////////////////////////////////////////////////////////////////////////////////////
+
 var map1 = ui.Map();
 map1.add(ui.Label('Basins Information',{position: 'bottom-center'}));
 snazzy.addStyle(MultiBrand,"MultiBrand", map1);
@@ -153,6 +200,7 @@ map1.addLayer(BAS_ID, {}, 'BAS ID', false, 0.1)
 map1.addLayer(BAS_ID_img.randomVisualizer(),{},'BAS ID img', true, 0.9)
 map1.addLayer(BAS_NAME, {}, 'BAS NAME', false, 0.1)
 map1.addLayer(UPLAND_SKM, {}, 'UPLAND SKM', false, 0.1)
+map1.addLayer(hillshade(hand30_100.mosaic().visualize(vis)), {}, 'DEM Base Hillshade', true, 0.3)
 map1.centerObject(Col_boun,5)
 
 var map2 = ui.Map();
@@ -163,28 +211,30 @@ map2.addLayer(BB_DIS_ORD_img.randomVisualizer(),{},'BB DIS ORD img', false, 0.9)
 map2.addLayer(BB_ID, {}, 'BB ID', false, 0.1)
 map2.addLayer(BB_ID_img.randomVisualizer(),{},'BB ID img', false, 0.9)
 map2.addLayer(RIV_ORD, {}, 'RIV OR', false, 0.1)
-map2.addLayer(RIV_ORD_img,{palette: ['red', 'orange', 'yellow', 'green']},'RIV OR img', true, 0.9)
+map2.addLayer(RIV_ORD_img, Water4,'RIV OR img', true, 0.9)
 map2.addLayer(BB_LEN_KM, {}, 'BB LEN KM', false, 0.1)
 map2.addLayer(BB_LEN_KM_img.randomVisualizer(),{},'BB LEN KM img', false, 0.9)
 map2.addLayer(LENGTH_KM, {}, 'LENGTH KM', false, 0.1)
+map2.addLayer(hillshade(hand30_100.mosaic().visualize(vis)), {}, 'DEM Base Hillshade', true, 0.3)
 map2.centerObject(Col_boun,5)
 
 var map3 = ui.Map();
 map3.add(ui.Label('Volume Average',{position: 'bottom-center'}));
 snazzy.addStyle(AccessCall,"AccessCall", map3);
 map3.addLayer(BB_VOL_TCM, {}, 'BB VOL TCM', false, 0.1)
-map3.addLayer(BB_VOL_TCM_img,{palette: palettes.crameri.roma[50]},'BB VOL TCM img', true, 0.9)
+map3.addLayer(BB_VOL_TCM_img, Water8,'BB VOL TCM img', true, 0.9)
 map3.addLayer(VOLUME_TCM, {}, 'VOLUME TCM', false, 0.1)
-map3.addLayer(VOLUME_TCM_img,{palette: palettes.crameri.roma[50]},'VOLUME TCM img', false, 0.9)
+map3.addLayer(VOLUME_TCM_img, Water6,'VOLUME TCM img', false, 0.9)
 map3.addLayer(DIS_AV_CMS, {}, 'DIS AV CMS', false, 0.1)
 map3.addLayer(DIS_AV_CMS_img.randomVisualizer(),{},'DIS AV CMS img', false, 0.9)
+map3.addLayer(hillshade(hand30_100.mosaic().visualize(vis)), {}, 'DEM Base Hillshade', true, 0.3)
 map3.centerObject(Col_boun,5)
 
 var map4 = ui.Map();
 map4.add(ui.Label('Free Flowing',{position: 'bottom-center'}));
 snazzy.addStyle(MutedBlue,"MutedBlue", map4);
 map4.addLayer(CSI, {}, 'CSI', false, 0.1)
-map4.addLayer(CSI_img,{palette: palettes.crameri.roma[50]},'CSI img', true, 0.9)
+map4.addLayer(CSI_img, Water8,'CSI img', true, 0.9)
 map4.addLayer(CSI_D, {}, 'CSI_D', false, 0.1)
 //map4.addLayer(CSI_D_img.randomVisualizer(),{},'CSI D img', true, 0.9)
 map4.addLayer(CSI_FF, {}, 'CSI FF', false, 0.1)
@@ -195,6 +245,7 @@ map4.addLayer(CSI_FF2, {}, 'CSI FF2', false, 0.1)
 map4.addLayer(CSI_FF2_img.randomVisualizer(),{},'CSI FF2 img', false, 0.9)
 map4.addLayer(CSI_FFID, {}, 'CSI_FFID', false, 0.1)
 map4.addLayer(CSI_FFID_img.randomVisualizer(),{},'CSIF FID img', false, 0.9)
+map4.addLayer(hillshade(hand30_100.mosaic().visualize(vis)), {}, 'DEM Base Hillshade', true, 0.3)
 map4.centerObject(Col_boun,5)
 
 var map5 = ui.Map();
@@ -209,7 +260,8 @@ map5.addLayer(SED_img.randomVisualizer(),{},'SED img', false, 0.9)
 map5.addLayer(URB, {}, 'URB', false, 0.1)
 map5.addLayer(URB_img.randomVisualizer(),{},'URB img', false, 0.9)
 map5.addLayer(USE, {}, 'USE', false, 0.1)
-map5.addLayer(USE_img,{palette: palettes.crameri.imola[50]},'USE img', true, 0.9)
+map5.addLayer(USE_img, Water4,'USE img', true, 0.9)
+map5.addLayer(hillshade(hand30_100.mosaic().visualize(vis)), {}, 'DEM Base Hillshade', true, 0.3)
 map5.centerObject(Col_boun,5)
 
 var map6 = ui.Map();
@@ -218,13 +270,14 @@ snazzy.addStyle(Cobalt,"Cobalt", map6);
 map6.addLayer(ERO_YLD_TO, {}, 'ERO YLD TO', false, 0.1)
 map6.addLayer(ERO_YLD_TO_img.randomVisualizer(),{},'ERO YLD TO img', false, 0.9)
 map6.addLayer(FLD, {}, 'FLD', false, 0.1)
-map6.addLayer(FLD_img,{palette: palettes.crameri.berlin[50]},'FLD img', true, 0.9)
+map6.addLayer(FLD_img, Water8,'FLD img', true, 0.9)
 map6.addLayer(HYFALL, {}, 'HYFALL', false, 0.1)
 map6.addLayer(HYFALL_img.randomVisualizer(),{},'HYFALL img', false, 0.9)
 map6.addLayer(INC, {}, 'INC', false, 0.1)
 map6.addLayer(INC_img.randomVisualizer(),{},'INC img', false, 0.9)
 map6.addLayer(NDOID, {}, 'NDOID', false, 0.1)
 map6.addLayer(NDOID_img.randomVisualizer(),{},'NDOID img', false, 0.9)
+map6.addLayer(hillshade(hand30_100.mosaic().visualize(vis)), {}, 'DEM Base Hillshade', true, 0.3)
 map6.centerObject(Col_boun,5)
 
 
