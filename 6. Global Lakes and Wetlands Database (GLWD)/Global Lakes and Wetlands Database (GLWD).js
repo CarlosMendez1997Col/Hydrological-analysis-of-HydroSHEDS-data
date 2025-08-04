@@ -1,12 +1,6 @@
 // Hydrological analysis using HydroATLAS, HydroSHEDS, HydroBASINS, HydroLAKES and HydroRIVERS data.
 
-// The original data, are available in:
-
-// Palettes and colors
-// https://github.com/gee-community/ee-palettes
-
-// HydroSHEDS
-// https://www.hydrosheds.org/products/hydrosheds
+// Created by Carlos Mendez
 
 // Global Lakes and Wetlands Database (GLWD)
 // https://www.hydrosheds.org/products/glwd
@@ -48,6 +42,36 @@
 // 32  Salt pan, saline/brackish wetland
 // 33  Paddy rice
 // 00  Dryland (non-wetland)
+
+
+////////////////////////////////////////////////////////////////////////////// Palette and Symbology  ///////////////////////////////////////////////////////////////////////////////////////
+
+// Import externat palette and symbology from Gena repository 
+// https://github.com/gee-community/ee-palettes
+var palettes = require('users/gena/packages:palettes');
+
+// Create manual palette 
+var flowAccumulationVis = {min: 0.0, max: 500.0, palette: ['000000', '023858', '006837', '1a9850', '66bd63', 'a6d96a', 
+                                                           'd9ef8b','ffffbf', 'fee08b', 'fdae61', 'f46d43', 'd73027'],
+                          };
+///// Hydrologically Conditioned and Void-Filled DEM /////
+
+var elevationVis = {min: -50.0, max: 3000.0, gamma: 2.0,};
+
+///// Drainage Direction /////
+
+var drainageDirectionVis = {min: 1.0, max: 128.0, palette: ['000000', '023858', '006837', '1a9850', '66bd63', 'a6d96a', 
+                                                            'd9ef8b', 'ffffbf', 'fee08b', 'fdae61', 'f46d43', 'd73027'],
+                           };
+
+var visParams = {lineWidth: 2, color: { property: 'RIV_ORD', mode: 'linear', palette: ['08519c', '3182bd', '6baed6', 'bdd7e7', 'eff3ff'],
+                min: 1, max: 10}};
+
+var area_pct_params = {min: 0, max: 100, palette: ['040613', '292851', '3f4b96', '427bb7', '61a8c7', '9cd4da', 'eafdfd'],};
+
+
+////////////////////////////////////////////////////////////////////////////// Main Script  ///////////////////////////////////////////////////////////////////////////////////////
+
 
 // Local files with Global Lakes and Wetlands Database (GLWD)
 
@@ -105,55 +129,40 @@ var BRB_lakes = lakes_BRB_oc.clip(geometry);
 
 ///// Global Lakes and Wetlands Database (GLWD)
 
-var palettes = require('users/gena/packages:palettes');
-
 var pal_area_ha_x10 = palettes.colorbrewer.Set3[12];
 var pal_area_pct = palettes.colorbrewer.YlGnBu[9];
 var pal_main_class = palettes.colorbrewer.Paired[12];
 var pal_main_class_50pct = palettes.colorbrewer.Paired[12];
 
-///// Flow Accumulation /////
+////////////////////////////////////////////////////////////////////////////// Set Style Images and Hillshade  ///////////////////////////////////////////////////////////////////////////////////////
 
-var flowAccumulationVis = {
-  min: 0.0,
-  max: 500.0,
-  palette: [
-    '000000', '023858', '006837', '1a9850', '66bd63', 'a6d96a', 'd9ef8b',
-    'ffffbf', 'fee08b', 'fdae61', 'f46d43', 'd73027'
-  ],
-};
+var hand30_100 = ee.ImageCollection("users/gena/global-hand/hand-100")
+var demALOS = ee.Image("JAXA/ALOS/AW3D30/V2_2")
 
-///// Hydrologically Conditioned and Void-Filled DEM /////
+demALOS = demALOS.select('AVE_DSM').clip(geometry)
 
-var elevationVis = {min: -50.0, max: 3000.0, gamma: 2.0,};
+var paletteHand = ['grey', 'white'];
 
+var vis = {min: -50.0, max: 3000.0, palette: paletteHand}
 
-///// Drainage Direction /////
+// add styled
+var utils = require('users/gena/packages:utils')
 
-var drainageDirectionVis = {
-  min: 1.0,
-  max: 128.0,
-  palette: [
-    '000000', '023858', '006837', '1a9850', '66bd63', 'a6d96a', 'd9ef8b',
-    'ffffbf', 'fee08b', 'fdae61', 'f46d43', 'd73027'
-  ],
-};
+function hillshade(image) {
+  var weight = 0.7
+  var extrusion = 5
+  var sunAzimuth = 315
+  var sunElevation = 35
+  var elevation = 45
+  var contrast = 0.1
+  var brightness = 0
+  var saturation = 0.85
+  var gamma = 0.1
 
-var visParams = {lineWidth: 2,
-  color: { property: 'RIV_ORD', mode: 'linear',
-    palette: ['08519c', '3182bd', '6baed6', 'bdd7e7', 'eff3ff'],
-    min: 1,
-    max: 10}
-};
-
-
-
-var area_pct_params = {
-  min: 0,
-  max: 100,
-  palette: ['040613', '292851', '3f4b96', '427bb7', '61a8c7', '9cd4da', 'eafdfd'],
-};
-
+  return utils.hillshadeRGB(image, demALOS, weight, extrusion, sunAzimuth, sunElevation, contrast, brightness, saturation, gamma)
+}
+  
+////////////////////////////////////////////////////////////////////////////// Set and Create Panels to View Images  ///////////////////////////////////////////////////////////////////////////////////////
 
 function createPanel1() {
   var label1 = ui.Label({
@@ -170,27 +179,32 @@ function createPanel2() {
 }  
   
 var map1 = ui.Map();
+
 map1.add(createPanel1())
-map1.setOptions('HYBRID')
-map1.centerObject(colombia)
 map1.addLayer(colombia, {}, 'Colombia Boundary',true, 0.5);
 map1.addLayer(BRB_flow_15, flowAccumulationVis, 'Flow Accumulation 15 Arc Seconds',true, 0.9);
 map1.addLayer(BRB_hydro_DEM_03, elevationVis, 'Elevation DEM 03 Arc Seconds', true, 0.9);
 map1.addLayer(BRB_void_fill_DEM_03, elevationVis, 'Elevation Void Fill DEM 03 Arc Seconds', true, 0.8);
 map1.addLayer(BRB_dra_dir_03, drainageDirectionVis, 'Drainage Direction 03 Arc Seconds', true, 0.5);
 map1.addLayer(BRB_lakes, visParams, 'Surface Water and Lakes ', true, 1.0);
-
+map1.addLayer(hillshade(hand30_100.mosaic().visualize(vis)), {}, 'DEM Base Hillshade', true, 0.3)
+map1.setOptions('HYBRID')
+map1.centerObject(colombia,4)
 
 var map2 = ui.Map();
-map2.setOptions('HYBRID')
+
 map2.add(createPanel2())
-map2.centerObject(colombia, 4)
 map2.addLayer(colombia, {}, 'Colombia Boundary',true, 0.5);
 map2.addLayer(delta_area_ha_x10, {min: 0, max: 214, palette: pal_area_ha_x10}, 'Combined GLWD area in hectares x10');
 map2.addLayer(delta_area_pct, {min: 0, max: 100, palette: pal_area_pct}, 'Combined GLWD area in percent');
 map2.addLayer(delta_main_class, {min: 0, max: 33, palette: pal_main_class}, 'Combined GLWD main class');
 map2.addLayer(delta_main_class_50pct, {min: 0, max: 33, palette: pal_main_class_50pct}, 'Combined GLWD main class extent exceeds (50%)');
-ui.root.clear()
+map2.addLayer(hillshade(hand30_100.mosaic().visualize(vis)), {}, 'DEM Base Hillshade', true, 0.3)
+map2.setOptions('HYBRID')
+map2.centerObject(colombia, 4)
 
+
+ui.root.clear()
 ui.root.add(map1)
 ui.root.add(map2)
+
