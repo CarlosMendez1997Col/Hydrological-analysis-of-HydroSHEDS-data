@@ -2,88 +2,155 @@
 
 ## Description
 
-Hydrological analysis of HydroATLAS, HydroSHEDS, HydroBASINS, Global Lakes and Wetlands Database (GLWD), HydroLAKES and HydroRIVERS in `ArcGIS Pro` and `Google Earth Engine (GEE)` 
+Hydrological analysis of HydroSHEDS, HydroATLAS, HydroBASINS, HydroRIVERS, HydroLAKES, GLWD, HydroWASTE, GloRiC, LakeTEMP in `Google Earth Engine (GEE)` 
 
 Each section is described below:
 
-- First section, HydroBASINS
-- Second section, HydroSHEDS
-- Third section, HydroRIVERS and HydroLAKES
-- Fourth section, Global Lakes and Wetlands Database (GLWD)
-- Fifth section, Global River Classification (GloRiC)
+## Datasets and packages
 
-## Libraries 
+#### External Basemaps
 
-### ArcGIS API For Python
-```Python
-import arcpy
-from arcpy.sa import*
-from arcpy.ia import*
-from arcgis.raster.functions import *
-
-# connect to GIS
-from arcgis.gis import GIS
-from arcgis.geometry import SpatialReference
-
-import pandas as pd
-import os
-from copy import deepcopy
+```Javascript
+var snazzy =require("users/aazuspan/snazzy:styles");
+var MultiBrand = "https://snazzymaps.com/style/20053/multi-brand-network"
+var MidNight = "https://snazzymaps.com/style/2/midnight-commander"
+var GeoMap = "https://snazzymaps.com/style/48477/geomap"
+var AImap = "https://snazzymaps.com/style/283414/ai-map"
+var AccessCall = "https://snazzymaps.com/style/10448/accesscall"
+var MutedBlue = "https://snazzymaps.com/style/83/muted-blue"
+var Outrun = "https://snazzymaps.com/style/122898/outrun"
+var Cobalt = "https://snazzymaps.com/style/30/cobalt"
 ```
-## Datasets
+#### Palettes and Symbology
 
-### Google Earth Engine (GEE)
 ```Javascript
 
-// HydroBasins level 7 to level 10
-ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_7");
-ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_8");
-ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_9");
-ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_10");
+require('users/gena/packages:palettes');
 
-// HydroSHEDS Flow Accumulation, 15 Arc-Seconds
+var Water1 = {palette: ['#d4a334','#1bff00','#fff700','#1b00ff','#10fff4','#50c7ff']};
+var Water2 = {palette: ['023858', '006837', '1a9850', '66bd63', 'a6d96a', 'd9ef8b', 'ffffbf', 'fee08b', 'fdae61', 'f46d43', 'd73027']};
+var Water3 = {palette: ['Red','SandyBrown','Yellow','LimeGreen', 'Blue','DarkBlue']};
+var Water4 = {palette: ['#1a1a4b', '#203387', '#254bb3', '#2b63e0', '#4673e6', '#6083ec', '#7a94f2', '#95a4f7', '#afb4fd', '#c8c5ff', 
+                            '#dcb3f5', '#df96e2', '#e47ac0', '#e95da0', '#ec407f', '#ee265f', '#f00a3f', '#f20027', '#f30015', '#f30000']};
+var Water5 = {palette: ['#0000FF', '#001AEB', '#0035D7', '#004FC3', '#006AAF','#00849B', '#009F87', '#00B973', '#00D45F', '#00EF4B',
+                              '#00FF37', '#29FF2E', '#52FF25', '#7BFF1C', '#A4FF13','#CDFF0A', '#F6FF00', '#FFD300', '#FFA600', '#FF7900']};
+var Water6 = {palette: ['001219','005f73','0a9396','94d2bd','e9d8a6','ee9b00','ca6702','bb3e03','ae2012','9b2226']};
+var Water7 = {palette: ['f94144','f3722c','f8961e','f9844a','f9c74f','90be6d','43aa8b','4d908e','577590','277da1']};
+var Water8 = {palette: ['000096','0064ff', '00b4ff', '33db80', '9beb4a','ffeb00', 'ffb300', 'ff6400', 'eb1e00', 'af0000']};
+
+```
+
+#### Hillshade images
+
+```Javascript
+ee.ImageCollection("users/gena/global-hand/hand-100")
+ee.Image("JAXA/ALOS/AW3D30/V2_2")
+```
+
+
+#### Colombia Boundary (AOI)
+
+```Javascript
+ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level1').filter(ee.Filter.eq('ADM0_NAME', 'Colombia'));
+```
+
+## Images
+
+- 1. HydroSHEDS
+
+```Javascript
+
 ee.Image('WWF/HydroSHEDS/15ACC');
-
-// HydroSHEDS Flow Accumulation, 30 Arc-Seconds
 ee.Image('WWF/HydroSHEDS/30ACC');
-
-// Hydrologically Conditioned DEM, 03 Arc-Seconds
 ee.Image('WWF/HydroSHEDS/03CONDEM');
-
-// Hydrologically Conditioned DEM, 15 Arc-Seconds
 ee.Image('WWF/HydroSHEDS/15CONDEM');
-
-// Hydrologically Conditioned DEM, 30 Arc-Seconds
 ee.Image('WWF/HydroSHEDS/30CONDEM');
-
-// Void-Filled DEM, 03 Arc-Seconds
 ee.Image('WWF/HydroSHEDS/03VFDEM');
-
-// Drainage Direction, 03 Arc-Seconds
 ee.Image('WWF/HydroSHEDS/03DIR');
-
-// Drainage Direction, 15 Arc-Seconds
 ee.Image('WWF/HydroSHEDS/15DIR');
-
-// Drainage Direction, 30 Arc-Seconds
 ee.Image('WWF/HydroSHEDS/30DIR');
+```
+     
+- 2. HydroATLAS
 
-// Import the global surface water (Lakes)
-ee.Image("JRC/GSW1_4/GlobalSurfaceWater");
+```Javascript
+// In construction
+```
+     
+- 3. HydroBASINS
 
-ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level1')
+```Javascript
+ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_2")
+ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_3")
+ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_4")
+ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_5")
+ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_6")
+ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_7")
+ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_8")
+ee.FeatureCollection("WWF/HydroSHEDS/v1/Basins/hybas_9")
+```
+     
+- 4. HydroRIVERS
 
+```Javascript
+ee.FeatureCollection('WWF/HydroSHEDS/v1/FreeFlowingRivers')
+```
+     
+- 5. HydroLAKES
+
+```Javascript
+ee.FeatureCollection("projects/sat-io/open-datasets/HydroLakes/lake_poly_v10")
+```
+     
+- 6. Global Lakes and Wetlands Database (GLWD)
+
+```Javascript
+ee.Image("projects/ee-carlosmendez1997/assets/Col_Combined_GLWD_v2_delta_area_ha_x10");
+ee.Image("projects/ee-carlosmendez1997/assets/Col_Combined_GLWD_v2_delta_area_pct");
+ee.Image("projects/ee-carlosmendez1997/assets/Col_Combined_GLWD_v2_delta_main_class");
+ee.Image("projects/ee-carlosmendez1997/assets/Col_Combined_GLWD_v2_delta_main_class_50pct");
+```
+     
+- 7. HydroWASTE
+
+```Javascript
+// In construction
+```
+     
+- 8. Global River Classification (GloRiC)
+
+```Javascript
+ee.FeatureCollection("projects/ee-carlosmendez1997/assets/GloRiC_v10_shapefile")
+```
+     
+- 9. LakeTEMP
+
+```Javascript
+// In construction
 ```
 
 ## Credits and repository of data
 
 The original code, repositories and scripts used in this project, are available at:
 
+- 1. HydroSHEDS `https://www.hydrosheds.org/products/hydrosheds`
 
--  HydroBASINS `https://www.hydrosheds.org/products/hydrobasins`
--  HHydroSHEDS `https://www.hydrosheds.org/products/hydrosheds`
--  HydroRIVERS and HydroLAKES `https://www.hydrosheds.org/products/hydrorivers`
--  Global Lakes and Wetlands Database (GLWD) `https://www.hydrosheds.org/products/glwd`
--  Global River Classification (GloRiC) `https://www.hydrosheds.org/products/gloric`
+- 2. HydroATLAS `https://www.hydrosheds.org/products/hydroatlas`
+     
+- 3. HydroBASINS `https://www.hydrosheds.org/products/hydrobasins`
+     
+- 4. HydroRIVERS `https://www.hydrosheds.org/products/hydrorivers`
+     
+- 5. HydroLAKES `https://www.hydrosheds.org/products/hydrolakes`
+     
+- 6. Global Lakes and Wetlands Database (GLWD) `https://www.hydrosheds.org/products/glwd`
+     
+- 7. HydroWASTE `https://www.hydrosheds.org/products/hydrowaste`
+     
+- 8. Global River Classification (GloRiC) `https://www.hydrosheds.org/products/gloric`
+     
+- 9. LakeTEMP `https://www.hydrosheds.org/products/laketemp`
+
 
 ## Conflict of Interest.
 
