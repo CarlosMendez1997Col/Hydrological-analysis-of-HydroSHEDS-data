@@ -1,4 +1,4 @@
-# Hydrological analysis using HydroATLAS, HydroSHEDS, HydroBASINS, HydroLAKES and HydroRIVERS data.
+# Hydrological analysis of HydroSHEDS, HydroATLAS, HydroBASINS, HydroRIVERS, HydroLAKES, GLWD, HydroWASTE, GloRiC, LakeTEMP in Google Earth Engine (GEE)
 
 ## Description
 
