@@ -1,10 +1,67 @@
 # Hydrological analysis of HydroSHEDS, HydroATLAS, HydroBASINS, HydroRIVERS, HydroLAKES, GLWD, HydroWASTE, GloRiC, LakeTEMP in Google Earth Engine (GEE)
 
+## Use and install this repository
+
+HTTPS
+```html
+https://github.com/CarlosMendez1997Col/Model-and-forecasts-hydrological-and-energetic-resources-using-ArcGIS-API-for-Python-and-R.git
+```
+
+GitHub CLI
+```html
+gh repo clone CarlosMendez1997Col/Model-and-forecasts-hydrological-and-energetic-resources-using-ArcGIS-API-for-Python-and-R
+```
+
 ## Description
 
-Hydrological analysis of HydroSHEDS, HydroATLAS, HydroBASINS, HydroRIVERS, HydroLAKES, GLWD, HydroWASTE, GloRiC, LakeTEMP in `Google Earth Engine (GEE)` 
+Repository builded in `Google Earth Engine (GEE)` and `Javascript`.
 
-Each section is described below:
+Each part is described below:
+
+- First part, HydroSHEDS
+  ```html
+  https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/tree/main/1.%20HydroSHEDS
+  ```
+- Second part, HydroATLAS
+  ```html
+  https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/tree/main/2.%20HydroATLAS
+  ```
+- Third part, HydroBASINS
+  ```html
+  https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/tree/main/3.%20HydroBASINS
+  ```
+- Fourth part, HydroRIVERS
+  ```html
+  https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/tree/main/4.%20HydroRIVERS
+  ```
+- Fifth part, HydroLAKES
+  ```html
+  https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/tree/main/5.%20HydroLAKES
+  ```
+- Sixth part, Global Lakes and Wetlands Database (GLWD)
+  ```html
+  https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/tree/main/6.%20Global%20Lakes%20and%20Wetlands%20Database%20(GLWD)
+  ```
+- Seventh part, HydroWASTE
+  ```html
+  https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/tree/main/7.%20HydroWASTE
+  ```
+- Eighth part, Global River Classification (GloRiC)
+  ```html
+  https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/tree/main/8.%20Global%20River%20Classification%20(GloRiC)
+  ```
+- Ninth part, LakeTEMP
+  ```html
+  https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/tree/main/9.%20LakeTEMP
+  ```
+
+## Versions and releases
+
+Version `2.0`
+
+```HTML
+https://github.com/CarlosMendez1997Col/Hydrological-analysis-of-HydroSHEDS-data/releases
+```
 
 ## Datasets and packages
 
@@ -151,13 +208,23 @@ The original code, repositories and scripts used in this project, are available 
      
 - 9. LakeTEMP `https://www.hydrosheds.org/products/laketemp`
 
-
 ## Conflict of Interest.
 
-The author declare that there is no conflict of interest in the publication of this data and that all authors have approved it for publication.
+The author declare that there is no conflict of interest in the publication of this data and have approved it for publication.
 
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
+Please make sure to update tests as appropriate. 
+
+## MIT License
+
+Copyright (c) 2025 Carlos Mendez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
